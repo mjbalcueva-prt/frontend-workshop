@@ -57,6 +57,7 @@
     "@prettier/plugin-oxc": "^0.1.4",
     "@tailwindcss/postcss": "^4",
     "@tanstack/eslint-plugin-query": "^5.101.2",
+    "@tanstack/react-query-devtools": "^5.101.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
