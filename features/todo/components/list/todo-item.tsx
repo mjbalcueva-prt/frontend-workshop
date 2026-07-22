@@ -5,14 +5,16 @@ import { Card, CardContent } from "@/core/components/ui/card"
 import { Checkbox } from "@/core/components/ui/checkbox"
 import { cn } from "@/core/lib/utils"
 
-interface TodoItemProps {
+/** A single todo row with a checkbox, text, and delete button */
+export function TodoItem({
+  todo,
+  onToggle,
+  onDelete,
+}: {
   todo: Todo
   onToggle: (id: string) => void
   onDelete: (id: string) => void
-}
-
-/** A single todo row with a checkbox, text, and delete button */
-export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
+}) {
   return (
     <Card>
       <CardContent className="flex items-center gap-3 px-4 py-3">

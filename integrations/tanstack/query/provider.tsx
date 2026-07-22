@@ -4,10 +4,6 @@ import { useState, type ReactNode } from "react"
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
-interface TanstackQueryProviderProps {
-  children: ReactNode
-}
-
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -29,7 +25,7 @@ function getQueryClient() {
   return browserQueryClient
 }
 
-export function TanstackQueryProvider({ children }: TanstackQueryProviderProps) {
+export function TanstackQueryProvider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(getQueryClient)
 
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

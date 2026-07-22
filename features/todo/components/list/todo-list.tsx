@@ -1,14 +1,16 @@
 import { TodoItem } from "@/features/todo/components/list/todo-item"
 import type { Todo } from "@/features/todo/lib/todo.schema"
 
-interface TodoListProps {
+/** Renders the list of todos with an empty state */
+export function TodoList({
+  todos,
+  onToggle,
+  onDelete,
+}: {
   todos: Todo[]
   onToggle: (id: string) => void
   onDelete: (id: string) => void
-}
-
-/** Renders the list of todos with an empty state */
-export function TodoList({ todos, onToggle, onDelete }: TodoListProps) {
+}) {
   if (todos.length === 0) {
     return (
       <p className="text-muted-foreground py-8 text-center text-sm">No todos yet. Add one above!</p>

@@ -11,12 +11,8 @@ import {
   CardTitle,
 } from "@/core/components/ui/card"
 
-interface PokemonDetailCardProps {
-  pokemon: Pokemon
-}
-
 /** Displays detailed information about a single pokemon */
-export function PokemonDetailCard({ pokemon }: PokemonDetailCardProps) {
+export function PokemonDetailCard({ pokemon }: { pokemon: Pokemon }) {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -26,11 +22,13 @@ export function PokemonDetailCard({ pokemon }: PokemonDetailCardProps) {
           {formatWeight(pokemon.weight)}
         </CardDescription>
       </CardHeader>
+
       {pokemon.sprites.front_default && (
         <CardContent className="flex justify-center">
           <img src={pokemon.sprites.front_default} alt={pokemon.name} width={120} height={120} />
         </CardContent>
       )}
+
       <CardFooter className="flex-wrap gap-1.5">
         {pokemon.types.map(t => (
           <Badge key={t.slot} variant="secondary" className="capitalize">

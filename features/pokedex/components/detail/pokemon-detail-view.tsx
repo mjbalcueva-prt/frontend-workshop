@@ -11,12 +11,8 @@ import { fetchPokemonOptions } from "@/features/pokedex/lib/pokemon.queries"
 import { Button } from "@/core/components/ui/button"
 import { Spinner } from "@/core/components/ui/spinner"
 
-interface PokemonDetailViewProps {
-  id: Promise<string>
-}
-
 /** Detail page view for a single pokemon: back button, loading/error states, and detail card */
-export function PokemonDetailView({ id }: PokemonDetailViewProps) {
+export function PokemonDetailView({ id }: { id: Promise<string> }) {
   const resolvedId = use(id)
 
   const { data: pokemon, isFetching, isError, error } = useQuery(fetchPokemonOptions(resolvedId))

@@ -4,12 +4,8 @@ import type { Pokemon, PokemonListItem } from "@/features/pokedex/lib/pokemon.sc
 export async function fetchPokemon(nameOrId: string): Promise<Pokemon> {
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(nameOrId)}`)
 
-  if (!response.ok) {
-    if (response.status === 404) {
-      throw new Error(`Pokémon "${nameOrId}" not found`)
-    }
-    throw new Error("Failed to fetch Pokémon data")
-  }
+  if (response.status === 404) throw new Error(`Pokémon "${nameOrId}" not found`)
+  if (!response.ok) throw new Error("Failed to fetch Pokémon data")
 
   return response.json() as Promise<Pokemon>
 }
@@ -28,9 +24,7 @@ export function extractId(url: string): number {
 export async function fetchAllPokemonList(): Promise<PokemonListItem[]> {
   const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch Pokémon list")
-  }
+  if (!response.ok) throw new Error("Failed to fetch Pokémon list")
 
   const data = (await response.json()) as PokéAPIListResponse
 

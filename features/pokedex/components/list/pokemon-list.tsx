@@ -13,14 +13,6 @@ import {
 } from "@/core/components/ui/pagination"
 import { Spinner } from "@/core/components/ui/spinner"
 
-interface PokemonListProps {
-  pokemon: PokemonListItem[] | undefined
-  isLoading: boolean
-  page: number
-  totalPages: number
-  onPageChange: (page: number) => void
-}
-
 /** Renders a paginated list of pokemon items with loading and empty states */
 export function PokemonList({
   pokemon,
@@ -28,7 +20,13 @@ export function PokemonList({
   page,
   totalPages,
   onPageChange,
-}: PokemonListProps) {
+}: {
+  pokemon: PokemonListItem[] | undefined
+  isLoading: boolean
+  page: number
+  totalPages: number
+  onPageChange: (page: number) => void
+}) {
   if (isLoading) {
     return (
       <div className="flex items-center gap-2 py-8">
