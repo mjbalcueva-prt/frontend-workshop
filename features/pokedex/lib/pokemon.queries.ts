@@ -6,7 +6,7 @@ const fetchPokemonKey = ["pokemon", "detail"] as const
 const fetchAllPokemonsKey = ["pokemon", "list"] as const
 
 /** Query options for fetching a single pokemon */
-export function fetchPokemonOptions(nameOrId: string) {
+export function fetchPokemonOptions({ nameOrId }: { nameOrId: string }) {
   return queryOptions({
     queryKey: [...fetchPokemonKey, nameOrId],
     queryFn: () => fetchPokemon(nameOrId),
@@ -15,7 +15,7 @@ export function fetchPokemonOptions(nameOrId: string) {
 }
 
 /** Query options for fetching a paginated pokemon list */
-export function fetchAllPokemonsOptions(page: number, limit: number = 20) {
+export function fetchAllPokemonsOptions({ page, limit = 20 }: { page: number; limit?: number }) {
   return queryOptions({
     queryKey: [...fetchAllPokemonsKey, { page, limit }],
     queryFn: () => fetchAllPokemons(page, limit),

@@ -11,10 +11,12 @@ export const addTodoSchema = z.object({
 
 export type AddTodoInput = z.infer<typeof addTodoSchema>
 
-/** A single todo item */
-export interface Todo {
-  id: string
-  text: string
-  completed: boolean
-  createdAt: number
-}
+/** Zod schema for a single todo item */
+export const todoSchema = z.object({
+  id: z.string(),
+  text: z.string(),
+  completed: z.boolean(),
+  createdAt: z.number(),
+})
+
+export type Todo = z.infer<typeof todoSchema>

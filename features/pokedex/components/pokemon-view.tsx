@@ -50,10 +50,10 @@ export function PokemonView() {
     isError,
     error,
     isSuccess: searchSuccess,
-  } = useQuery(fetchPokemonOptions(query))
+  } = useQuery(fetchPokemonOptions({ nameOrId: query }))
 
   const { data: paginatedList, isFetching: isListFetching } = useQuery(
-    fetchAllPokemonsOptions(page, pageSize)
+    fetchAllPokemonsOptions({ page, limit: pageSize })
   )
 
   /** Handles valid form submission by setting the search query */
@@ -102,16 +102,17 @@ export function PokemonView() {
             </FieldGroup>
           </form>
         </CardContent>
-        <CardFooter>
-          {showSearchResult ? (
-            <Button type="button" variant="outline" onClick={handleClear}>
-              Clear
-            </Button>
-          ) : null}
+        <CardFooter className="gap-1.5">
           <Button type="submit" form="pokemon-search-form" disabled={isFetching}>
             {isFetching && <Spinner />}
             Search
           </Button>
+
+          {showSearchResult && (
+            <Button type="button" variant="outline" onClick={handleClear}>
+              Clear
+            </Button>
+          )}
         </CardFooter>
       </Card>
 

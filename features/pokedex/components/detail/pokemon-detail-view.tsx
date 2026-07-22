@@ -12,7 +12,12 @@ import { Spinner } from "@/core/components/ui/spinner"
 
 /** Detail page view for a single pokemon: back button, loading/error states, and detail card */
 export function PokemonDetailView({ id }: { id: string }) {
-  const { data: pokemon, isFetching, isError, error } = useQuery(fetchPokemonOptions(id))
+  const {
+    data: pokemon,
+    isFetching,
+    isError,
+    error,
+  } = useQuery(fetchPokemonOptions({ nameOrId: id }))
 
   return (
     <div className="flex w-full flex-col gap-4">
