@@ -88,7 +88,6 @@ export function PokemonView() {
                     <Input
                       {...field}
                       id="pokemon-search-input"
-                      aria-invalid={fieldState.invalid}
                       placeholder="e.g. pikachu or 25"
                       autoComplete="off"
                     />

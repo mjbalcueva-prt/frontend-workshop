@@ -54,10 +54,7 @@ export function PokemonList({
       <Pagination>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious
-              onClick={canPrev ? () => onPageChange(page - 1) : undefined}
-              aria-disabled={!canPrev}
-            />
+            <PaginationPrevious onClick={canPrev ? () => onPageChange(page - 1) : undefined} />
           </PaginationItem>
           {pageNumbers.map((page, i) =>
             page === "ellipsis" ? (
@@ -71,10 +68,7 @@ export function PokemonList({
             )
           )}
           <PaginationItem>
-            <PaginationNext
-              onClick={canNext ? () => onPageChange(page + 1) : undefined}
-              aria-disabled={!canNext}
-            />
+            <PaginationNext onClick={canNext ? () => onPageChange(page + 1) : undefined} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

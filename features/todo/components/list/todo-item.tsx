@@ -18,11 +18,7 @@ export function TodoItem({
   return (
     <Card>
       <CardContent className="flex items-center gap-3 px-4 py-3">
-        <Checkbox
-          checked={todo.completed}
-          onCheckedChange={() => onToggle(todo.id)}
-          aria-label={`Toggle "${todo.text}"`}
-        />
+        <Checkbox checked={todo.completed} onCheckedChange={() => onToggle(todo.id)} />
         <span
           className={cn(
             "min-w-0 flex-1 text-sm",
@@ -31,12 +27,7 @@ export function TodoItem({
         >
           {todo.text}
         </span>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onDelete(todo.id)}
-          aria-label={`Delete "${todo.text}"`}
-        >
+        <Button variant="ghost" size="sm" onClick={() => onDelete(todo.id)}>
           Delete
         </Button>
       </CardContent>

@@ -77,7 +77,6 @@ export function TodoView() {
                     <Input
                       {...field}
                       id="todo-text-input"
-                      aria-invalid={fieldState.invalid}
                       placeholder="e.g. Buy groceries"
                       autoComplete="off"
                     />
