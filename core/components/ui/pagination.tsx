@@ -2,7 +2,9 @@ import * as React from "react"
 
 import {
   ArrowLeft01Icon,
+  ArrowLeft02Icon,
   ArrowRight01Icon,
+  ArrowRight02Icon,
   MoreHorizontalCircle01Icon,
 } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -113,11 +115,49 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span"
   )
 }
 
+function PaginationFirst({
+  className,
+  text = "First",
+  ...props
+}: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
+  return (
+    <PaginationLink
+      aria-label="Go to first page"
+      size="default"
+      className={cn("pl-1.5!", className)}
+      {...props}
+    >
+      <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} data-icon="inline-start" />
+      <span className="hidden sm:block">{text}</span>
+    </PaginationLink>
+  )
+}
+
+function PaginationLast({
+  className,
+  text = "Last",
+  ...props
+}: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
+  return (
+    <PaginationLink
+      aria-label="Go to last page"
+      size="default"
+      className={cn("pr-1.5!", className)}
+      {...props}
+    >
+      <span className="hidden sm:block">{text}</span>
+      <HugeiconsIcon icon={ArrowRight02Icon} strokeWidth={2} data-icon="inline-end" />
+    </PaginationLink>
+  )
+}
+
 export {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
+  PaginationFirst,
   PaginationItem,
+  PaginationLast,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,

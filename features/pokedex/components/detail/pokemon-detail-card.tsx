@@ -1,0 +1,55 @@
+import type { Pokemon } from "@/features/pokedex/lib/pokemon.schema"
+
+import { Badge } from "@/core/components/ui/badge"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/core/components/ui/card"
+
+interface PokemonDetailCardProps {
+  pokemon: Pokemon
+}
+
+/** Converts height from decimeters to a human-readable string */
+function formatHeight(dm: number): string {
+  return `${(dm / 10).toFixed(1)} m`
+}
+
+/** Converts weight from hectograms to a human-readable string */
+function formatWeight(hg: number): string {
+  return `${(hg / 10).toFixed(1)} kg`
+}
+
+/** Displays detailed information about a single pokemon */
+export function PokemonDetailCard({ pokemon }: PokemonDetailCardProps) {
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle className="capitalize">{pokemon.name}</CardTitle>
+        <CardDescription>
+          #{String(pokemon.id).padStart(3, "0")} · Height: {formatHeight(pokemon.height)} · Weight:{" "}
+          {formatWeight(pokemon.weight)}
+        </CardDescription>
+      </CardHeader>
+      {pokemon.sprites.front_default && (
+        <CardContent className="flex justify-center">
+          <img src={pokemon.sprites.front_default} alt={pokemon.name} width={120} height={120} />
+        </CardContent>
+      )}
+      <CardFooter className="flex-wrap gap-1.5">
+        {pokemon.types.map(t => (
+          <Badge key={t.slot} variant="secondary" className="capitalize">
+            {t.type.name}
+          </Badge>
+        ))}
+        {pokemon.types.length === 0 && (
+          <span className="text-muted-foreground text-xs">No types</span>
+        )}
+      </CardFooter>
+    </Card>
+  )
+}

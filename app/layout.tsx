@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { Figtree, Geist, Geist_Mono, Nunito_Sans } from "next/font/google"
 
+import { TanstackQueryProvider } from "@/integrations/tanstack/query/provider"
+
 import { TooltipProvider } from "@/core/components/ui/tooltip"
 import { cn } from "@/core/lib/utils"
 
@@ -35,7 +37,9 @@ export default function RootLayout({
       )}
     >
       <body className="flex min-h-full flex-col">
-        <TooltipProvider>{children}</TooltipProvider>
+        <TanstackQueryProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </TanstackQueryProvider>
       </body>
     </html>
   )
