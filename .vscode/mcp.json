@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "reui": {
+      "type": "http",
+      "url": "https://mcp.reui.io",
+      "headers": {
+        "Authorization": "Bearer reui_pat_your_token_here"
+      }
+    }
+  }
+}
