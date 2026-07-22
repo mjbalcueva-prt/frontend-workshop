@@ -1,4 +1,5 @@
 import type { Pokemon, PokemonListItem } from "@/features/pokedex/lib/pokemon.schema"
+import { extractId } from "@/features/pokedex/utils/pokemon.url"
 
 /** Fetches a single pokemon by name or ID from the PokéAPI */
 export async function fetchPokemon(nameOrId: string): Promise<Pokemon> {
@@ -8,30 +9,6 @@ export async function fetchPokemon(nameOrId: string): Promise<Pokemon> {
   if (!response.ok) throw new Error("Failed to fetch Pokémon data")
 
   return response.json() as Promise<Pokemon>
-}
-
-interface PokéAPIListResponse {
-  results: { name: string; url: string }[]
-}
-
-/** Extracts the numeric pokemon ID from a PokéAPI URL, e.g. "pokemon/25/" → 25 */
-export function extractId(url: string): number {
-  const parts = url.replace(/\/$/, "").split("/")
-  return Number(parts[parts.length - 1])
-}
-
-/** Fetches the full list of original 151 pokemon */
-export async function fetchAllPokemonList(): Promise<PokemonListItem[]> {
-  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
-
-  if (!response.ok) throw new Error("Failed to fetch Pokémon list")
-
-  const data = (await response.json()) as PokéAPIListResponse
-
-  return data.results.map(p => ({
-    name: p.name,
-    id: extractId(p.url),
-  }))
 }
 
 // --- Paginated list ---
