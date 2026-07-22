@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 import type { Pokemon } from "@/features/pokedex/lib/pokemon.schema"
 import { formatHeight, formatWeight } from "@/features/pokedex/utils/pokemon.format"
 
@@ -25,7 +27,7 @@ export function PokemonDetailCard({ pokemon }: { pokemon: Pokemon }) {
 
       {pokemon.sprites.front_default && (
         <CardContent className="flex justify-center">
-          <img src={pokemon.sprites.front_default} alt={pokemon.name} width={120} height={120} />
+          <Image src={pokemon.sprites.front_default} alt={pokemon.name} width={120} height={120} />
         </CardContent>
       )}
 
