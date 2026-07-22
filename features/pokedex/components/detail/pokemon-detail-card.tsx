@@ -1,4 +1,5 @@
 import type { Pokemon } from "@/features/pokedex/lib/pokemon.schema"
+import { formatHeight, formatWeight } from "@/features/pokedex/utils/pokemon.format"
 
 import { Badge } from "@/core/components/ui/badge"
 import {
@@ -12,16 +13,6 @@ import {
 
 interface PokemonDetailCardProps {
   pokemon: Pokemon
-}
-
-/** Converts height from decimeters to a human-readable string */
-function formatHeight(dm: number): string {
-  return `${(dm / 10).toFixed(1)} m`
-}
-
-/** Converts weight from hectograms to a human-readable string */
-function formatWeight(hg: number): string {
-  return `${(hg / 10).toFixed(1)} kg`
 }
 
 /** Displays detailed information about a single pokemon */

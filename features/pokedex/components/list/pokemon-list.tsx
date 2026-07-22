@@ -1,5 +1,6 @@
 import { PokemonItem } from "@/features/pokedex/components/list/pokemon-item"
 import type { PokemonListItem } from "@/features/pokedex/lib/pokemon.schema"
+import { getPageNumbers } from "@/features/pokedex/utils/pokemon.pagination"
 
 import {
   Pagination,
@@ -11,23 +12,6 @@ import {
   PaginationPrevious,
 } from "@/core/components/ui/pagination"
 import { Spinner } from "@/core/components/ui/spinner"
-
-/** Builds page numbers with at most 5 visible buttons, ellipsis for gaps */
-function getPageNumbers(current: number, total: number): (number | "ellipsis")[] {
-  if (total <= 5) return Array.from({ length: total }, (_, i) => i + 1)
-
-  const pages = new Set([1, total, current - 1, current, current + 1])
-  const sorted = Array.from(pages)
-    .filter(n => n >= 1 && n <= total)
-    .sort((a, b) => a - b)
-
-  const result: (number | "ellipsis")[] = []
-  for (let i = 0; i < sorted.length; i++) {
-    if (i > 0 && sorted[i] - sorted[i - 1] > 1) result.push("ellipsis")
-    result.push(sorted[i])
-  }
-  return result
-}
 
 interface PokemonListProps {
   pokemon: PokemonListItem[] | undefined
@@ -77,13 +61,13 @@ export function PokemonList({
               aria-disabled={!canPrev}
             />
           </PaginationItem>
-          {pageNumbers.map((p, i) =>
-            p === "ellipsis" ? (
+          {pageNumbers.map((page, i) =>
+            page === "ellipsis" ? (
               <PaginationEllipsis key={`e-${i}`} />
             ) : (
-              <PaginationItem key={p}>
-                <PaginationLink isActive={p === page} onClick={() => onPageChange(p)}>
-                  {p}
+              <PaginationItem key={page}>
+                <PaginationLink isActive={page === page} onClick={() => onPageChange(page)}>
+                  {page}
                 </PaginationLink>
               </PaginationItem>
             )
