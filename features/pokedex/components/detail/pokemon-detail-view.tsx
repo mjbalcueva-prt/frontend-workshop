@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { use } from "react"
 
 import { useQuery } from "@tanstack/react-query"
 
@@ -12,10 +11,8 @@ import { Button } from "@/core/components/ui/button"
 import { Spinner } from "@/core/components/ui/spinner"
 
 /** Detail page view for a single pokemon: back button, loading/error states, and detail card */
-export function PokemonDetailView({ id }: { id: Promise<string> }) {
-  const resolvedId = use(id)
-
-  const { data: pokemon, isFetching, isError, error } = useQuery(fetchPokemonOptions(resolvedId))
+export function PokemonDetailView({ id }: { id: string }) {
+  const { data: pokemon, isFetching, isError, error } = useQuery(fetchPokemonOptions(id))
 
   return (
     <div className="flex w-full flex-col gap-4">

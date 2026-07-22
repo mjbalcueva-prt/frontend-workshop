@@ -1,6 +1,6 @@
 import { PokemonView } from "@/features/pokedex/components/pokemon-view"
 
-export default function Home() {
+export default function HomePage(props: PageProps<"/">) {
   return (
     <>
       <div className="flex flex-col items-center gap-2 text-center">

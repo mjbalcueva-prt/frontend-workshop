@@ -1,11 +1,12 @@
 "use client"
 
+import { type Route } from "next"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { cn } from "@/core/lib/utils"
 
-const navLinks = [
+const navLinks: { href: Route; label: string }[] = [
   { href: "/", label: "Pokédex" },
   { href: "/todo", label: "Todos" },
 ]
