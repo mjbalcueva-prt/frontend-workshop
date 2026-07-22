@@ -9,8 +9,6 @@ export const addTodoSchema = z.object({
     .transform(v => v.trim()),
 })
 
-export type AddTodoInput = z.infer<typeof addTodoSchema>
-
 /** Zod schema for a single todo item */
 export const todoSchema = z.object({
   id: z.string(),
@@ -20,3 +18,4 @@ export const todoSchema = z.object({
 })
 
 export type Todo = z.infer<typeof todoSchema>
+export type AddTodoInput = z.infer<typeof addTodoSchema>

@@ -1,5 +1,11 @@
+"use client"
+
+import { useState } from "react"
+
+import { useQuery } from "@tanstack/react-query"
+
 import { PokemonItem } from "@/features/pokedex/components/list/pokemon-item"
-import type { PokemonListItem } from "@/features/pokedex/lib/pokemon.schema"
+import { fetchAllPokemonsOptions } from "@/features/pokedex/lib/pokemon.queries"
 import { getPageNumbers } from "@/features/pokedex/utils/pokemon.pagination"
 
 import {
@@ -13,21 +19,15 @@ import {
 } from "@/core/components/ui/pagination"
 import { Spinner } from "@/core/components/ui/spinner"
 
+const pageSize = 10
+
 /** Renders a paginated list of pokemon items with loading and empty states */
-export function PokemonList({
-  pokemon,
-  isLoading,
-  page,
-  totalPages,
-  onPageChange,
-}: {
-  pokemon: PokemonListItem[] | undefined
-  isLoading: boolean
-  page: number
-  totalPages: number
-  onPageChange: (page: number) => void
-}) {
-  if (isLoading) {
+export function PokemonList() {
+  const [page, setPage] = useState(1)
+
+  const pokemonResult = useQuery(fetchAllPokemonsOptions({ page, limit: pageSize }))
+
+  if (pokemonResult.isFetching) {
     return (
       <div className="flex items-center gap-2 py-8">
         <Spinner />
@@ -36,39 +36,40 @@ export function PokemonList({
     )
   }
 
-  if (!pokemon || pokemon.length === 0) {
+  const data = pokemonResult.data
+  if (!data || data.items.length === 0) {
     return <p className="text-muted-foreground py-8 text-sm">No Pokémon to display</p>
   }
 
   const canPrev = page > 1
-  const canNext = page < totalPages
-  const pageNumbers = getPageNumbers(page, totalPages)
+  const canNext = page < data.totalPages
+  const pageNumbers = getPageNumbers(page, data.totalPages)
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        {pokemon.map(p => (
+        {data.items.map(p => (
           <PokemonItem key={p.id} pokemon={p} />
         ))}
       </div>
       <Pagination>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious onClick={canPrev ? () => onPageChange(page - 1) : undefined} />
+            <PaginationPrevious onClick={canPrev ? () => setPage(page - 1) : undefined} />
           </PaginationItem>
-          {pageNumbers.map((page, i) =>
-            page === "ellipsis" ? (
+          {pageNumbers.map((p, i) =>
+            p === "ellipsis" ? (
               <PaginationEllipsis key={`e-${i}`} />
             ) : (
-              <PaginationItem key={page}>
-                <PaginationLink isActive={page === page} onClick={() => onPageChange(page)}>
-                  {page}
+              <PaginationItem key={p}>
+                <PaginationLink isActive={p === page} onClick={() => setPage(p)}>
+                  {p}
                 </PaginationLink>
               </PaginationItem>
             )
           )}
           <PaginationItem>
-            <PaginationNext onClick={canNext ? () => onPageChange(page + 1) : undefined} />
+            <PaginationNext onClick={canNext ? () => setPage(page + 1) : undefined} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

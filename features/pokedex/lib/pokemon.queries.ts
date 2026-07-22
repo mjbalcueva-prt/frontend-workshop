@@ -2,8 +2,8 @@ import { queryOptions } from "@tanstack/react-query"
 
 import { fetchAllPokemons, fetchPokemon } from "@/features/pokedex/lib/pokemon.api"
 
-const fetchPokemonKey = ["pokemon", "detail"] as const
-const fetchAllPokemonsKey = ["pokemon", "list"] as const
+export const fetchPokemonKey = ["pokemon", "detail"] as const
+export const fetchAllPokemonsKey = ["pokemon", "list"] as const
 
 /** Query options for fetching a single pokemon */
 export function fetchPokemonOptions({ nameOrId }: { nameOrId: string }) {

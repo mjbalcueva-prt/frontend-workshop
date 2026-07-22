@@ -26,8 +26,6 @@ import {
 } from "@/core/components/ui/field"
 import { Input } from "@/core/components/ui/input"
 
-let nextId = 1
-
 /** Main todo view: add form, list, toggle, and delete — powered by useState */
 export function TodoView() {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -39,7 +37,7 @@ export function TodoView() {
 
   const addTodo = useCallback(
     (text: string) => {
-      const id = String(nextId++)
+      const id = String(Date.now())
       setTodos(prev => [...prev, { id, text, completed: false, createdAt: Date.now() }])
       form.reset()
     },
@@ -54,7 +52,7 @@ export function TodoView() {
     setTodos(prev => prev.filter(t => t.id !== id))
   }, [])
 
-  function onSubmit(data: AddTodoInput) {
+  const onSubmit = (data: AddTodoInput) => {
     addTodo(data.text)
   }
 

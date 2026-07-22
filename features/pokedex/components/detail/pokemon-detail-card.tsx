@@ -1,7 +1,7 @@
 import Image from "next/image"
 
 import type { Pokemon } from "@/features/pokedex/lib/pokemon.schema"
-import { formatHeight, formatWeight } from "@/features/pokedex/utils/pokemon.format"
+import { formatHeight, formatWeight, padId } from "@/features/pokedex/utils/pokemon.format"
 
 import { Badge } from "@/core/components/ui/badge"
 import {
@@ -20,7 +20,7 @@ export function PokemonDetailCard({ pokemon }: { pokemon: Pokemon }) {
       <CardHeader>
         <CardTitle className="capitalize">{pokemon.name}</CardTitle>
         <CardDescription>
-          #{String(pokemon.id).padStart(3, "0")} · Height: {formatHeight(pokemon.height)} · Weight:{" "}
+          {padId(pokemon.id)} · Height: {formatHeight(pokemon.height)} · Weight:{" "}
           {formatWeight(pokemon.weight)}
         </CardDescription>
       </CardHeader>

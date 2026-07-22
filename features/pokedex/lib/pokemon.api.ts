@@ -1,4 +1,4 @@
-import type { Pokemon, PokemonListItem } from "@/features/pokedex/lib/pokemon.schema"
+import type { PaginatedPokemonList, Pokemon } from "@/features/pokedex/lib/pokemon.schema"
 import { extractId } from "@/features/pokedex/utils/pokemon.url"
 
 /** Fetches a single pokemon by name or ID from the PokéAPI */
@@ -13,19 +13,6 @@ export async function fetchPokemon(nameOrId: string): Promise<Pokemon> {
 
 // --- Paginated list ---
 
-/** A page of pokemon list results */
-export interface PaginatedPokemonList {
-  items: PokemonListItem[]
-  total: number
-  page: number
-  totalPages: number
-}
-
-interface PokéAPIPaginatedResponse {
-  count: number
-  results: { name: string; url: string }[]
-}
-
 /** Fetches a paginated list of pokemon from the PokéAPI */
 export async function fetchAllPokemons(page: number, limit: number): Promise<PaginatedPokemonList> {
   const offset = (page - 1) * limit
@@ -35,7 +22,10 @@ export async function fetchAllPokemons(page: number, limit: number): Promise<Pag
     throw new Error("Failed to fetch Pokémon list")
   }
 
-  const data = (await response.json()) as PokéAPIPaginatedResponse
+  const data = (await response.json()) as {
+    count: number
+    results: { name: string; url: string }[]
+  }
 
   return {
     items: data.results.map(p => ({

@@ -29,14 +29,17 @@ export const pokemonSchema = z.object({
   types: z.array(pokemonTypeSchema),
 })
 
-/** Lightweight pokemon reference used in list views */
-export const pokemonListItemSchema = z.object({
-  id: z.number(),
-  name: z.string(),
+/** A page of pokemon list results */
+export const paginatedPokemonListSchema = z.object({
+  items: z.array(pokemonSchema.pick({ id: true, name: true })),
+  total: z.number(),
+  page: z.number(),
+  totalPages: z.number(),
 })
 
 export type SearchPokemonInput = z.infer<typeof searchPokemonSchema>
 export type PokemonType = z.infer<typeof pokemonTypeSchema>
 export type PokemonSprites = z.infer<typeof pokemonSpritesSchema>
 export type Pokemon = z.infer<typeof pokemonSchema>
-export type PokemonListItem = z.infer<typeof pokemonListItemSchema>
+export type PokemonListItem = Pick<Pokemon, "id" | "name">
+export type PaginatedPokemonList = z.infer<typeof paginatedPokemonListSchema>
