@@ -1,12 +1,18 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 
 import { TodoList } from "@/features/todo/components/list/todo-list"
-import { addTodoSchema, type AddTodoInput, type Todo } from "@/features/todo/lib/todo.schema"
+import {
+  useCreateTodo,
+  useDeleteTodo,
+  useTodos,
+  useToggleTodo,
+} from "@/features/todo/lib/todo.queries"
+import { addTodoSchema, type AddTodoInput } from "@/features/todo/lib/todo.schema"
 
 import { Button } from "@/core/components/ui/button"
 import {
@@ -25,35 +31,40 @@ import {
   FieldLabel,
 } from "@/core/components/ui/field"
 import { Input } from "@/core/components/ui/input"
+import { Spinner } from "@/core/components/ui/spinner"
 
-/** Main todo view: add form, list, toggle, and delete — powered by useState */
 export function TodoView() {
-  const [todos, setTodos] = useState<Todo[]>([])
+  const { data: todos = [], isLoading, isError, error } = useTodos()
+  const createTodo = useCreateTodo()
+  const toggleTodo = useToggleTodo()
+  const deleteTodo = useDeleteTodo()
 
   const form = useForm<AddTodoInput>({
     resolver: zodResolver(addTodoSchema),
     defaultValues: { text: "" },
   })
 
-  const addTodo = useCallback(
-    (text: string) => {
-      const id = String(Date.now())
-      setTodos(prev => [...prev, { id, text, completed: false, createdAt: Date.now() }])
-      form.reset()
+  const handleToggle = useCallback(
+    (id: string) => {
+      const todo = todos.find(t => t.id === id)
+      if (todo) {
+        toggleTodo.mutate({ id, completed: !todo.completed })
+      }
     },
-    [form]
+    [todos, toggleTodo]
   )
 
-  const toggleTodo = useCallback((id: string) => {
-    setTodos(prev => prev.map(t => (t.id === id ? { ...t, completed: !t.completed } : t)))
-  }, [])
-
-  const deleteTodo = useCallback((id: string) => {
-    setTodos(prev => prev.filter(t => t.id !== id))
-  }, [])
+  const handleDelete = useCallback(
+    (id: string) => {
+      deleteTodo.mutate(id)
+    },
+    [deleteTodo]
+  )
 
   const onSubmit = (data: AddTodoInput) => {
-    addTodo(data.text)
+    createTodo.mutate(data.text, {
+      onSuccess: () => form.reset(),
+    })
   }
 
   return (
@@ -77,6 +88,7 @@ export function TodoView() {
                       id="todo-text-input"
                       placeholder="e.g. Buy groceries"
                       autoComplete="off"
+                      disabled={createTodo.isPending}
                     />
                     <FieldDescription>What needs to get done?</FieldDescription>
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -87,14 +99,28 @@ export function TodoView() {
           </form>
         </CardContent>
         <CardFooter>
-          <Button type="submit" form="todo-add-form" className="w-full">
+          <Button
+            type="submit"
+            form="todo-add-form"
+            className="w-full"
+            disabled={createTodo.isPending}
+          >
+            {createTodo.isPending && <Spinner data-icon="inline-start" />}
             Add Todo
           </Button>
         </CardFooter>
       </Card>
 
       <div className="min-w-0 flex-1">
-        <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
+        {isLoading ? (
+          <p className="text-muted-foreground py-8 text-center text-sm">Loading todos...</p>
+        ) : isError ? (
+          <p className="text-destructive py-8 text-center text-sm">
+            {error instanceof Error ? error.message : "Failed to load todos"}
+          </p>
+        ) : (
+          <TodoList todos={todos} onToggle={handleToggle} onDelete={handleDelete} />
+        )}
       </div>
     </div>
   )

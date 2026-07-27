@@ -9,12 +9,14 @@ export const addTodoSchema = z.object({
     .transform(v => v.trim()),
 })
 
-/** Zod schema for a single todo item */
+/** Zod schema for a single todo item (matches Laravel API response) */
 export const todoSchema = z.object({
-  id: z.string(),
+  id: z.coerce.string(),
+  user_id: z.number(),
   text: z.string(),
   completed: z.boolean(),
-  createdAt: z.number(),
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
 })
 
 export type Todo = z.infer<typeof todoSchema>

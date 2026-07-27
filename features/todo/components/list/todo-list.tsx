@@ -21,23 +21,17 @@ export function TodoList({
   const done = todos.filter(t => t.completed)
 
   return (
-    <div className="flex flex-col gap-6">
-      {pending.length > 0 && (
+    <div className="flex flex-col gap-2">
+      {done.length > 0 && (
         <div className="flex flex-col gap-2">
-          <h3 className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-            Todo ({pending.length})
-          </h3>
-          {pending.map(todo => (
+          {done.map(todo => (
             <TodoItem key={todo.id} todo={todo} onToggle={onToggle} onDelete={onDelete} />
           ))}
         </div>
       )}
-      {done.length > 0 && (
+      {pending.length > 0 && (
         <div className="flex flex-col gap-2">
-          <h3 className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-            Done ({done.length})
-          </h3>
-          {done.map(todo => (
+          {pending.map(todo => (
             <TodoItem key={todo.id} todo={todo} onToggle={onToggle} onDelete={onDelete} />
           ))}
         </div>

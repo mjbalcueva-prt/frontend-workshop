@@ -1,17 +1,24 @@
 import "server-only"
 
-import { cache } from "react" // ← add this
+import { cache } from "react"
 
-import axios from "axios"
+import axios, { type AxiosResponse } from "axios"
 
 import { getAuthToken } from "@/features/auth/_utils/auth.cookie"
 
 import { env } from "@/env"
 
+/** Simulate network latency: 100–500ms random delay */
+async function simulateLatency(response: AxiosResponse): Promise<AxiosResponse> {
+  const delay = Math.floor(Math.random() * 400) + 100
+  await new Promise(resolve => setTimeout(resolve, delay))
+  return response
+}
+
 export const createApiClient = cache(async () => {
   const token = await getAuthToken()
 
-  return axios.create({
+  const client = axios.create({
     baseURL: env.API_URL,
     headers: {
       "Accept": "application/json",
@@ -20,4 +27,10 @@ export const createApiClient = cache(async () => {
     },
     validateStatus: () => true,
   })
+
+  if (env.NODE_ENV === "development") {
+    client.interceptors.response.use(simulateLatency)
+  }
+
+  return client
 })
