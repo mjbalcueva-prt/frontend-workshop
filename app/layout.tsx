@@ -3,6 +3,7 @@ import { Figtree, Geist, Geist_Mono, Nunito_Sans } from "next/font/google"
 
 import { TanstackQueryProvider } from "@/integrations/tanstack/query/provider"
 
+import { ThemeProvider } from "@/core/components/theme-provider"
 import { TooltipProvider } from "@/core/components/ui/tooltip"
 import { cn } from "@/core/lib/utils"
 
@@ -29,17 +30,21 @@ export default function RootLayout({
       className={cn(
         "h-full",
         "antialiased",
+        "dark",
         geistSans.variable,
         geistMono.variable,
         "font-sans",
         nunitoSans.variable,
         figtreeHeading.variable
       )}
+      suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col">
-        <TanstackQueryProvider>
-          <TooltipProvider>{children}</TooltipProvider>
-        </TanstackQueryProvider>
+      <body className="flex min-h-full flex-col" suppressHydrationWarning>
+        <ThemeProvider>
+          <TanstackQueryProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </TanstackQueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

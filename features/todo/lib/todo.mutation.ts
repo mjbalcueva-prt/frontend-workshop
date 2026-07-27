@@ -1,33 +1,18 @@
-import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import {
   createTodoAction,
   deleteTodoAction,
-  fetchTodosAction,
   updateTodoAction,
 } from "@/features/todo/lib/todo.action"
-
-export const todosQueryKey = ["todos"] as const
-
-/** Query options for fetching all todos */
-export function todosQueryOptions() {
-  return queryOptions({
-    queryKey: [...todosQueryKey],
-    queryFn: () => fetchTodosAction(),
-  })
-}
-
-/** Hook to fetch the todo list (read) */
-export function useTodos() {
-  return useQuery(todosQueryOptions())
-}
+import { todosQueryKey } from "@/features/todo/lib/todo.query"
 
 /** Hook to create a new todo (mutation) */
 export function useCreateTodo() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationKey: [...todosQueryKey, "create"],
+    mutationKey: ["todos", "create"],
     mutationFn: (text: string) => createTodoAction(text),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: todosQueryKey })
@@ -40,7 +25,7 @@ export function useToggleTodo() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationKey: [...todosQueryKey, "toggle"],
+    mutationKey: ["todos", "toggle"],
     mutationFn: ({ id, completed }: { id: string; completed: boolean }) =>
       updateTodoAction(id, { completed }),
     onSuccess: () => {
@@ -54,7 +39,7 @@ export function useDeleteTodo() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationKey: [...todosQueryKey, "delete"],
+    mutationKey: ["todos", "delete"],
     mutationFn: (id: string) => deleteTodoAction(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: todosQueryKey })

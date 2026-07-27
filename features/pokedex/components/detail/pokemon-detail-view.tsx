@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useQuery, type UseQueryResult } from "@tanstack/react-query"
 
 import { PokemonDetailCard } from "@/features/pokedex/components/detail/pokemon-detail-card"
-import { fetchPokemonOptions } from "@/features/pokedex/lib/pokemon.queries"
+import { fetchPokemonOptions } from "@/features/pokedex/lib/pokemon.query"
 import type { Pokemon } from "@/features/pokedex/lib/pokemon.schema"
 
 import { Button } from "@/core/components/ui/button"

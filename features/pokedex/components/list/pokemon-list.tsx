@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 
 import { PokemonItem } from "@/features/pokedex/components/list/pokemon-item"
-import { fetchAllPokemonsOptions } from "@/features/pokedex/lib/pokemon.queries"
+import { fetchAllPokemonsOptions } from "@/features/pokedex/lib/pokemon.query"
 import { getPageNumbers } from "@/features/pokedex/utils/pokemon.pagination"
 
 import {

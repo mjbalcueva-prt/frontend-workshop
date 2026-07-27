@@ -4,19 +4,6 @@ import type { Todo } from "@/features/todo/lib/todo.schema"
 
 import { createApiClient } from "@/integrations/axios/api"
 
-/** Server action: fetch all todos for the authenticated user */
-export async function fetchTodosAction(): Promise<Todo[]> {
-  const api = await createApiClient()
-  const response = await api.get<Todo[]>("/api/todos")
-
-  if (response.status >= 400) {
-    const error = (response.data as { message?: string }).message ?? "Failed to fetch todos"
-    throw new Error(error)
-  }
-
-  return response.data
-}
-
 /** Server action: create a new todo */
 export async function createTodoAction(text: string): Promise<Todo> {
   const api = await createApiClient()

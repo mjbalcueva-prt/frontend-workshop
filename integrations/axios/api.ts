@@ -8,9 +8,9 @@ import { getAuthToken } from "@/features/auth/_utils/auth.cookie"
 
 import { env } from "@/env"
 
-/** Simulate network latency: 100–500ms random delay */
+/** Simulate network latency: 250–750ms random delay */
 async function simulateLatency(response: AxiosResponse): Promise<AxiosResponse> {
-  const delay = Math.floor(Math.random() * 400) + 100
+  const delay = Math.floor(Math.random() * 500) + 250
   await new Promise(resolve => setTimeout(resolve, delay))
   return response
 }

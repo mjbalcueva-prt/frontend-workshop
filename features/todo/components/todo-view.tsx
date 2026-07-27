@@ -6,13 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 
 import { TodoList } from "@/features/todo/components/list/todo-list"
-import {
-  useCreateTodo,
-  useDeleteTodo,
-  useTodos,
-  useToggleTodo,
-} from "@/features/todo/lib/todo.queries"
-import { addTodoSchema, type AddTodoInput } from "@/features/todo/lib/todo.schema"
+import { useCreateTodo, useDeleteTodo, useToggleTodo } from "@/features/todo/lib/todo.mutation"
+import { useTodos } from "@/features/todo/lib/todo.query"
+import { addTodoSchema, type AddTodoInput, type Todo } from "@/features/todo/lib/todo.schema"
 
 import { Button } from "@/core/components/ui/button"
 import {
@@ -33,8 +29,8 @@ import {
 import { Input } from "@/core/components/ui/input"
 import { Spinner } from "@/core/components/ui/spinner"
 
-export function TodoView() {
-  const { data: todos = [], isLoading, isError, error } = useTodos()
+export function TodoView({ initialTodos }: { initialTodos?: Todo[] }) {
+  const { data: todos = [], isLoading, isError, error } = useTodos(initialTodos)
   const createTodo = useCreateTodo()
   const toggleTodo = useToggleTodo()
   const deleteTodo = useDeleteTodo()

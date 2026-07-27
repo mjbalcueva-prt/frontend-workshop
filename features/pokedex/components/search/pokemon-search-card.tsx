@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useQuery } from "@tanstack/react-query"
 import { Controller, useForm } from "react-hook-form"
 
-import { fetchPokemonOptions } from "@/features/pokedex/lib/pokemon.queries"
+import { fetchPokemonOptions } from "@/features/pokedex/lib/pokemon.query"
 import { searchPokemonSchema, type SearchPokemonInput } from "@/features/pokedex/lib/pokemon.schema"
 
 import { Button } from "@/core/components/ui/button"

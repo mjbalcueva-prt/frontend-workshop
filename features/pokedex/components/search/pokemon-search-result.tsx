@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query"
 
 import { PokemonDetailCard } from "@/features/pokedex/components/detail/pokemon-detail-card"
-import { fetchPokemonOptions } from "@/features/pokedex/lib/pokemon.queries"
+import { fetchPokemonOptions } from "@/features/pokedex/lib/pokemon.query"
 
 import { Spinner } from "@/core/components/ui/spinner"
 
