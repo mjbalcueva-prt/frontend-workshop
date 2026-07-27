@@ -1,44 +1,22 @@
-"use client"
+import { redirect } from "next/navigation"
 
-import { type Route } from "next"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { getCurrentUser } from "@/features/auth/user/lib/user.api"
+import { AuthProvider } from "@/features/auth/user/providers/auth-provider"
 
-import { cn } from "@/core/lib/utils"
+import { SiteNav } from "@/core/components/shell/site-nav"
 
-const navLinks: { href: Route; label: string }[] = [
-  { href: "/", label: "Pokédex" },
-  { href: "/todo", label: "Todos" },
-]
-
-export default function SiteLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
+export default async function SiteLayout({ children }: { children: React.ReactNode }) {
+  const user = await getCurrentUser()
+  if (!user) redirect("/login")
 
   return (
-    <div className="flex flex-1 flex-col items-center bg-zinc-50 px-4 py-16 dark:bg-black">
-      <main className="flex w-full max-w-5xl flex-col items-center gap-8">
-        <div className="flex items-center gap-4">
-          {navLinks.map(link => {
-            const isActive = pathname === link.href
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "text-sm font-medium transition-colors",
-                  isActive
-                    ? "text-black underline underline-offset-4 dark:text-zinc-50"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {link.label}
-              </Link>
-            )
-          })}
-        </div>
-
-        {children}
-      </main>
-    </div>
+    <AuthProvider user={user}>
+      <div className="flex flex-1 flex-col items-center bg-zinc-50 px-4 py-16 dark:bg-black">
+        <main className="flex w-full max-w-5xl flex-col items-center gap-8">
+          <SiteNav />
+          {children}
+        </main>
+      </div>
+    </AuthProvider>
   )
 }
