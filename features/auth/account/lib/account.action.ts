@@ -1,5 +1,6 @@
 "use server"
 
+import { getErrorMessage } from "@/features/auth/_utils/get-error-message"
 import type { User } from "@/features/auth/user/lib/user.schema"
 
 import { createApiClient } from "@/integrations/axios/api"
@@ -11,11 +12,11 @@ type AccountResponse = User & { message?: string }
 
 export async function updateAccountAction(input: AccountInput): Promise<AccountActionResult> {
   const api = await createApiClient()
-  const response = await api.patch<AccountResponse>("/api/user", input)
 
-  if (response.status >= 400) {
-    return { error: response.data.message ?? "Unable to update your account." }
+  try {
+    const { data } = await api.patch<AccountResponse>("/api/user", input)
+    return { user: data }
+  } catch (error) {
+    return { error: getErrorMessage(error) }
   }
-
-  return { user: response.data }
 }

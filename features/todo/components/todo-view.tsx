@@ -10,6 +10,7 @@ import { useCreateTodo, useDeleteTodo, useToggleTodo } from "@/features/todo/lib
 import { useTodos } from "@/features/todo/lib/todo.query"
 import { addTodoSchema, type AddTodoInput, type Todo } from "@/features/todo/lib/todo.schema"
 
+import { Alert, AlertDescription } from "@/core/components/reui/alert"
 import { Button } from "@/core/components/ui/button"
 import {
   Card,
@@ -30,7 +31,7 @@ import { Input } from "@/core/components/ui/input"
 import { Spinner } from "@/core/components/ui/spinner"
 
 export function TodoView({ initialTodos }: { initialTodos?: Todo[] }) {
-  const { data: todos = [], isLoading, isError, error } = useTodos(initialTodos)
+  const todos = useTodos(initialTodos)
   const createTodo = useCreateTodo()
   const toggleTodo = useToggleTodo()
   const deleteTodo = useDeleteTodo()
@@ -42,12 +43,13 @@ export function TodoView({ initialTodos }: { initialTodos?: Todo[] }) {
 
   const handleToggle = useCallback(
     (id: string) => {
-      const todo = todos.find(t => t.id === id)
+      const list = todos.data ?? []
+      const todo = list.find(t => t.id === id)
       if (todo) {
         toggleTodo.mutate({ id, completed: !todo.completed })
       }
     },
-    [todos, toggleTodo]
+    [todos.data, toggleTodo]
   )
 
   const handleDelete = useCallback(
@@ -108,14 +110,18 @@ export function TodoView({ initialTodos }: { initialTodos?: Todo[] }) {
       </Card>
 
       <div className="min-w-0 flex-1">
-        {isLoading ? (
+        {todos.isLoading && (
           <p className="text-muted-foreground py-8 text-center text-sm">Loading todos...</p>
-        ) : isError ? (
-          <p className="text-destructive py-8 text-center text-sm">
-            {error instanceof Error ? error.message : "Failed to load todos"}
-          </p>
-        ) : (
-          <TodoList todos={todos} onToggle={handleToggle} onDelete={handleDelete} />
+        )}
+        {!todos.isLoading && todos.isError && (
+          <Alert variant="destructive">
+            <AlertDescription>
+              {todos.error instanceof Error ? todos.error.message : "Failed to load todos"}
+            </AlertDescription>
+          </Alert>
+        )}
+        {!todos.isLoading && !todos.isError && (
+          <TodoList todos={todos.data ?? []} onToggle={handleToggle} onDelete={handleDelete} />
         )}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 
-import { getCurrentUser } from "@/features/auth/user/lib/user.api"
+import { getCurrentUser } from "@/features/auth/user/lib/user.action"
 import { AuthProvider } from "@/features/auth/user/providers/auth-provider"
 
 import { SiteNav } from "@/core/components/shell/site-nav"

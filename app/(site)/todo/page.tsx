@@ -1,5 +1,5 @@
 import { TodoView } from "@/features/todo/components/todo-view"
-import { getTodos } from "@/features/todo/lib/todo.api"
+import { getTodos } from "@/features/todo/lib/todo.action"
 
 export default async function TodoPage() {
   const todos = await getTodos()

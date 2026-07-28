@@ -1,6 +1,7 @@
 "use server"
 
 import { setAuthCookie } from "@/features/auth/_utils/auth.cookie"
+import { getErrorMessage } from "@/features/auth/_utils/get-error-message"
 import type { User } from "@/features/auth/user/lib/user.schema"
 
 import { createApiClient } from "@/integrations/axios/api"
@@ -12,12 +13,12 @@ type LoginResponse = { user: User; token: string; message?: string }
 
 export async function loginAction(input: LoginInput): Promise<LoginActionResult> {
   const api = await createApiClient()
-  const response = await api.post<LoginResponse>("/api/login", input)
 
-  if (response.status >= 400) {
-    return { error: response.data.message ?? "Unable to sign in." }
+  try {
+    const { data } = await api.post<LoginResponse>("/api/login", input)
+    await setAuthCookie(data.token, input.remember)
+    return { user: data.user }
+  } catch (error) {
+    return { error: getErrorMessage(error) }
   }
-
-  await setAuthCookie(response.data.token, input.remember)
-  return { user: response.data.user }
 }

@@ -8,7 +8,7 @@ import { getAuthToken } from "@/features/auth/_utils/auth.cookie"
 
 import { env } from "@/env"
 
-/** Simulate network latency: 250–750ms random delay */
+/** Simulate network latency: 250–750ms random delay (dev only) */
 async function simulateLatency(response: AxiosResponse): Promise<AxiosResponse> {
   const delay = Math.floor(Math.random() * 500) + 250
   await new Promise(resolve => setTimeout(resolve, delay))
@@ -25,7 +25,6 @@ export const createApiClient = cache(async () => {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    validateStatus: () => true,
   })
 
   if (env.NODE_ENV === "development") {
