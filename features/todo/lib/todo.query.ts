@@ -1,6 +1,6 @@
 import { queryOptions, useQuery } from "@tanstack/react-query"
 
-import { getTodos } from "@/features/todo/lib/todo.action"
+import { getTodos } from "@/features/todo/lib/todo.api"
 import type { Todo } from "@/features/todo/lib/todo.schema"
 
 export const todosQueryKey = ["todos"] as const

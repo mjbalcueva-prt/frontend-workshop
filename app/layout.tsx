@@ -30,7 +30,6 @@ export default function RootLayout({
       className={cn(
         "h-full",
         "antialiased",
-        "dark",
         geistSans.variable,
         geistMono.variable,
         "font-sans",

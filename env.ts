@@ -15,7 +15,9 @@ export const env = createEnv({
    * Client-side environment variables (must be prefixed with NEXT_PUBLIC_).
    * These are bundled into the client and exposed to the browser.
    */
-  client: {},
+  client: {
+    NEXT_PUBLIC_API_URL: z.string().url(),
+  },
 
   /**
    * Runtime provides the actual values. On the server, read from process.env.
@@ -23,6 +25,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     API_URL: process.env.API_URL,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NODE_ENV: process.env.NODE_ENV,
   },
 

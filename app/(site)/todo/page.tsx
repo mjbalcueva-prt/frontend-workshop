@@ -1,8 +1,20 @@
-import { TodoView } from "@/features/todo/components/todo-view"
-import { getTodos } from "@/features/todo/lib/todo.action"
+"use client"
 
-export default async function TodoPage() {
-  const todos = await getTodos()
+import { TodoView } from "@/features/todo/components/todo-view"
+import { useTodos } from "@/features/todo/lib/todo.query"
+
+import { Spinner } from "@/core/components/ui/spinner"
+
+export default function TodoPage() {
+  const { data: todos, isLoading } = useTodos()
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <Spinner />
+      </div>
+    )
+  }
 
   return (
     <>
@@ -13,7 +25,7 @@ export default async function TodoPage() {
         <p className="text-muted-foreground text-sm">Keep track of what needs to get done.</p>
       </div>
 
-      <TodoView initialTodos={todos} />
+      <TodoView initialTodos={todos ?? []} />
     </>
   )
 }
