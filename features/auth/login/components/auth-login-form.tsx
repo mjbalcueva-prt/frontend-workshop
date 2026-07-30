@@ -18,11 +18,12 @@ import { Checkbox } from "@/core/components/ui/checkbox"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/core/components/ui/field"
 import { Input } from "@/core/components/ui/input"
 import { Spinner } from "@/core/components/ui/spinner"
+import { withCallbackUrl } from "@/core/proxy/url"
 
 import { useLogin } from "../lib/login.mutation"
 import { loginSchema, type LoginInput } from "../lib/login.schema"
 
-export function AuthLoginForm() {
+export function AuthLoginForm({ callbackUrl }: { callbackUrl?: string }) {
   const login = useLogin()
 
   const form = useForm<LoginInput>({
@@ -30,7 +31,7 @@ export function AuthLoginForm() {
     defaultValues: { email: "", password: "", remember: false },
   })
 
-  const onSubmit = (data: LoginInput) => login.mutate(data)
+  const onSubmit = (data: LoginInput) => login.mutate({ input: data, callbackUrl })
 
   return (
     <Card className="w-full max-w-sm">
@@ -100,7 +101,10 @@ export function AuthLoginForm() {
             </Button>
             <p className="text-muted-foreground text-center text-xs">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="text-foreground underline underline-offset-2">
+              <Link
+                href={withCallbackUrl("/register", callbackUrl ?? "/")}
+                className="text-foreground underline underline-offset-2"
+              >
                 Register
               </Link>
             </p>

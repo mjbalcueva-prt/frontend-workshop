@@ -8,6 +8,8 @@ import { getAuthToken } from "@/features/auth/_utils/auth.cookie"
 
 import { env } from "@/env"
 
+import { normalizeApiError } from "./api.error"
+
 /** Simulate network latency: 250–750ms random delay (dev only) */
 async function simulateLatency(response: AxiosResponse): Promise<AxiosResponse> {
   const delay = Math.floor(Math.random() * 500) + 250
@@ -30,6 +32,8 @@ export const createApiClient = cache(async () => {
   if (env.NODE_ENV === "development") {
     client.interceptors.response.use(simulateLatency)
   }
+
+  client.interceptors.response.use(undefined, error => Promise.reject(normalizeApiError(error)))
 
   return client
 })

@@ -1,22 +1,15 @@
 "use server"
 
-import { getErrorMessage } from "@/features/auth/_utils/get-error-message"
-import type { User } from "@/features/auth/user/lib/user.schema"
+import { userSchema, type User } from "@/features/auth/user/lib/user.schema"
 
-import { createApiClient } from "@/integrations/axios/api"
+import { protectedFetch } from "@/integrations/axios/protected-fetch"
 
-import { type AccountInput } from "./account.schema"
+import { accountSchema, type AccountInput } from "./account.schema"
 
-type AccountActionResult = { user: User } | { error: string }
-type AccountResponse = User & { message?: string }
+export async function updateAccountAction(input: AccountInput): Promise<User> {
+  const parsedInput = accountSchema.parse(input)
 
-export async function updateAccountAction(input: AccountInput): Promise<AccountActionResult> {
-  const api = await createApiClient()
-
-  try {
-    const { data } = await api.patch<AccountResponse>("/api/user", input)
-    return { user: data }
-  } catch (error) {
-    return { error: getErrorMessage(error) }
-  }
+  return protectedFetch(api => api.patch<unknown>("/api/user", parsedInput), {
+    schema: userSchema,
+  })
 }

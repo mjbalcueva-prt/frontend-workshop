@@ -6,16 +6,21 @@ import type { User } from "@/features/auth/user/lib/user.schema"
 
 import { createApiClient } from "@/integrations/axios/api"
 
-import { type RegisterInput } from "./register.schema"
+import { registerSchema, type RegisterInput } from "./register.schema"
 
 type RegisterActionResult = { user: User } | { error: string }
 type RegisterResponse = { user: User; token: string; message?: string }
 
 export async function registerAction(input: RegisterInput): Promise<RegisterActionResult> {
-  const api = await createApiClient()
+  const parsedInput = registerSchema.safeParse(input)
+
+  if (!parsedInput.success) {
+    return { error: parsedInput.error.issues[0]?.message ?? "Invalid registration details" }
+  }
 
   try {
-    const { data } = await api.post<RegisterResponse>("/api/register", input)
+    const api = await createApiClient()
+    const { data } = await api.post<RegisterResponse>("/api/register", parsedInput.data)
     await setAuthCookie(data.token)
     return { user: data.user }
   } catch (error) {

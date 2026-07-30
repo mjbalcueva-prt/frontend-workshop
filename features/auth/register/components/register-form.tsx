@@ -17,11 +17,12 @@ import {
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/core/components/ui/field"
 import { Input } from "@/core/components/ui/input"
 import { Spinner } from "@/core/components/ui/spinner"
+import { withCallbackUrl } from "@/core/proxy/url"
 
 import { useRegister } from "../lib/register.mutation"
 import { registerSchema, type RegisterInput } from "../lib/register.schema"
 
-export function AuthRegisterForm() {
+export function AuthRegisterForm({ callbackUrl }: { callbackUrl?: string }) {
   const register = useRegister()
 
   const form = useForm<RegisterInput>({
@@ -29,7 +30,7 @@ export function AuthRegisterForm() {
     defaultValues: { name: "", email: "", password: "", password_confirmation: "" },
   })
 
-  const onSubmit = (data: RegisterInput) => register.mutate(data)
+  const onSubmit = (data: RegisterInput) => register.mutate({ input: data, callbackUrl })
 
   return (
     <Card className="w-full max-w-sm">
@@ -119,7 +120,10 @@ export function AuthRegisterForm() {
             </Button>
             <p className="text-muted-foreground text-center text-xs">
               Already have an account?{" "}
-              <Link href="/login" className="text-foreground underline underline-offset-2">
+              <Link
+                href={withCallbackUrl("/login", callbackUrl ?? "/")}
+                className="text-foreground underline underline-offset-2"
+              >
                 Sign in
               </Link>
             </p>

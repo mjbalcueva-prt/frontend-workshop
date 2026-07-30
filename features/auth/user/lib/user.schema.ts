@@ -11,3 +11,10 @@ export const userSchema = z.object({
 })
 
 export type User = z.infer<typeof userSchema>
+
+/** Shape the authenticated session endpoint returns. */
+export const userResponseSchema = userSchema.extend({
+  isLocked: z.boolean(),
+})
+
+export type UserResponse = z.infer<typeof userResponseSchema>

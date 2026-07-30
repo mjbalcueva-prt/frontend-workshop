@@ -10,14 +10,7 @@ export function useUpdateAccount() {
 
   return useMutation({
     mutationKey: ["auth", "update-account"],
-    mutationFn: async (input: AccountInput) => {
-      const result = await updateAccountAction(input)
-      if ("error" in result) {
-        throw new Error(result.error)
-      }
-
-      return result.user
-    },
+    mutationFn: (input: AccountInput) => updateAccountAction(input),
     onSuccess: () => {
       router.refresh()
     },

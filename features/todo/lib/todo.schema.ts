@@ -19,5 +19,7 @@ export const todoSchema = z.object({
   updated_at: z.string().optional(),
 })
 
+export const todoListSchema = z.array(todoSchema)
+
 export type Todo = z.infer<typeof todoSchema>
 export type AddTodoInput = z.infer<typeof addTodoSchema>

@@ -1,3 +1,5 @@
+"use client"
+
 import { useAuth } from "@/features/auth/user/providers/auth-provider"
 
 import {
@@ -20,20 +22,9 @@ export function SessionCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <dl className="flex flex-col gap-2 text-sm">
-          <div className="flex justify-between">
-            <dt className="text-muted-foreground">User ID</dt>
-            <dd className="font-mono">{user.id}</dd>
-          </div>
-          <div className="flex justify-between">
-            <dt className="text-muted-foreground">Email</dt>
-            <dd>{user.email}</dd>
-          </div>
-          <div className="flex justify-between">
-            <dt className="text-muted-foreground">Joined</dt>
-            <dd>{new Date(user.created_at).toLocaleDateString()}</dd>
-          </div>
-        </dl>
+        <pre className="overflow-auto rounded-lg bg-zinc-950 p-4 font-mono text-xs text-zinc-50">
+          {JSON.stringify(user, null, 2)}
+        </pre>
       </CardContent>
     </Card>
   )
